@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50">
+  <style>
+    .company-name { font: bold 24px sans-serif; fill: #6D28D9; }
+  </style>
+  <text x="10" y="35" class="company-name">COMPORELI</text>
+</svg> 

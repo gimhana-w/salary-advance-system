@@ -31,12 +31,22 @@ class AdminController extends Controller
             ->whereMonth('approved_at', now())
             ->count();
 
+        // Calculate total pending advances amount
+        $pendingAdvancesAmount = $pendingRequests->sum('amount');
+
+        // Calculate recent pending advances (last 24 hours)
+        $recentPendingAdvances = SalaryAdvanceRequest::where('status', 'pending')
+            ->where('created_at', '>=', now()->subHours(24))
+            ->count();
+
         return view('admin.dashboard', compact(
             'pendingRequests',
             'recentlyApproved',
             'totalEmployees',
             'totalPendingRequests',
-            'totalApprovedThisMonth'
+            'totalApprovedThisMonth',
+            'pendingAdvancesAmount',
+            'recentPendingAdvances'
         ));
     }
 

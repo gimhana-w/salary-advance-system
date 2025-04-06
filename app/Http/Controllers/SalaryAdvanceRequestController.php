@@ -27,12 +27,12 @@ class SalaryAdvanceRequestController extends Controller
         $employee = Auth::user();
         
         // Check if employee has any pending requests
-        if ($employee->advanceRequests()->where('status', 'pending')->exists()) {
+        if ($employee->salaryAdvanceRequests()->where('status', 'pending')->exists()) {
             return back()->withErrors(['general' => 'You already have a pending advance request.']);
         }
 
         // Check cooldown period
-        $lastApprovedRequest = $employee->advanceRequests()
+        $lastApprovedRequest = $employee->salaryAdvanceRequests()
             ->where('status', 'approved')
             ->latest('approved_at')
             ->first();
@@ -43,7 +43,7 @@ class SalaryAdvanceRequestController extends Controller
 
         // Create the request
         $advanceRequest = new SalaryAdvanceRequest($request->validated());
-        $employee->advanceRequests()->save($advanceRequest);
+        $employee->salaryAdvanceRequests()->save($advanceRequest);
 
         return redirect()->route('employee.dashboard')
             ->with('status', 'Salary advance request submitted successfully.');

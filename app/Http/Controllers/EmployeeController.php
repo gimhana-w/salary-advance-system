@@ -14,12 +14,12 @@ class EmployeeController extends Controller
     public function dashboard()
     {
         $employee = auth()->user();
-        $pendingRequests = $employee->advanceRequests()
+        $pendingRequests = $employee->salaryAdvanceRequests()
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->get();
         
-        $recentRequests = $employee->advanceRequests()
+        $recentRequests = $employee->salaryAdvanceRequests()
             ->whereIn('status', ['approved', 'rejected'])
             ->orderBy('created_at', 'desc')
             ->take(5)
@@ -52,7 +52,7 @@ class EmployeeController extends Controller
 
     public function requestHistory()
     {
-        $requests = auth()->user()->advanceRequests()
+        $requests = auth()->user()->salaryAdvanceRequests()
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
