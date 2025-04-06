@@ -1,27 +1,44 @@
-# Employee Salary Advance Request System
+# Salary Advance System
 
-A web application for managing employee salary advance requests built with Laravel.
+A Laravel-based web application for managing employee salary advance requests.
 
 ## Features
 
-- Employee Portal for submitting salary advance requests
-- Admin Dashboard for request management
-- SMS notifications via SendX.lk gateway
-- Secure authentication and data encryption
-- Responsive design for desktop and mobile
-- Audit trail for tracking actions
+- Employee Management
+  - Create, read, update, and delete employee records
+  - Track employee details including ID, NIC, department, position, and salary
+  - Manage employee status (active/inactive)
+
+- Salary Advance Requests
+  - Employees can submit salary advance requests
+  - Admins can approve or reject requests
+  - Track request history and status
+
+- Admin Dashboard
+  - Overview of pending and approved requests
+  - Employee management interface
+  - Reports and statistics
+
+- Employee Dashboard
+  - View and submit salary advance requests
+  - Track request history
+  - Manage profile information
 
 ## Requirements
 
 - PHP >= 8.1
 - Composer
-- MySQL
-- Node.js & NPM
-- SendX.lk API account
+- MySQL/MariaDB
+- Node.js & NPM (for frontend assets)
 
 ## Installation
 
-1. Clone the repository
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd salary-advance-system
+```
+
 2. Install PHP dependencies:
 ```bash
 composer install
@@ -32,7 +49,7 @@ composer install
 npm install
 ```
 
-4. Copy .env.example to .env and configure:
+4. Create environment file:
 ```bash
 cp .env.example .env
 ```
@@ -42,39 +59,36 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-6. Configure database settings in .env
+6. Configure your database in `.env` file:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
 
-7. Run migrations:
+7. Run migrations and seeders:
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
-8. Configure SendX.lk SMS gateway credentials in .env:
-```
-SENDX_API_KEY=your_api_key
-SENDX_SENDER_ID=your_sender_id
-```
-
-9. Start the development server:
+8. Start the development server:
 ```bash
 php artisan serve
 ```
 
-## Technology Stack
+9. In a separate terminal, compile assets:
+```bash
+npm run dev
+```
 
-- Backend: Laravel (PHP Framework)
-- Frontend: Blade templating, HTML, CSS, JavaScript
-- Database: MySQL
-- SMS Gateway: SendX.lk
-- Hosting: Hosinger server
+## Default Admin Account
 
-## Development Timeline
-
-- Phase 1: Planning & Design (2-3 days)
-- Phase 2: Development (5-7 days)
-- Phase 3: Testing & Deployment (2-3 days)
-- Phase 4: Support & Maintenance (Ongoing)
+- Email: admin@example.com
+- Password: password
 
 ## License
 
-[MIT License](LICENSE.md)
+This project is licensed under the MIT License.
