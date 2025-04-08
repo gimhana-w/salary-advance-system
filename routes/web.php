@@ -65,8 +65,17 @@ Route::middleware(['auth', \App\Http\Middleware\AdminMiddleware::class])->prefix
     
     // Request Management
     Route::get('/requests', [AdminController::class, 'requests'])->name('requests');
+
     Route::put('/requests/{request}/approve', [AdminController::class, 'approveRequest'])->name('requests.approve');
     Route::put('/requests/{request}/reject', [AdminController::class, 'rejectRequest'])->name('requests.reject');
+
+    // Admin Users Management
+    Route::get('/users', [AdminController::class, 'users'])->name('users.index');
+    Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
+    Route::post('/users', [AdminController::class, 'storeUser'])->name('users.store');
+    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
     
     // Reports
     Route::get('/reports', [AdminController::class, 'reports'])->name('reports');

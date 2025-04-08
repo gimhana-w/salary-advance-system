@@ -132,11 +132,21 @@ class AdminController extends Controller
             ->with('success', 'Employee deleted successfully.');
     }
 
-    public function requests()
+    public function requests(Request $request)
     {
-        $requests = SalaryAdvanceRequest::with('employee')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = SalaryAdvanceRequest::with(['employee', 'approver', 'rejector'])
+            ->when($request->filled('status'), function($q) use ($request) {
+                return $q->where('status', $request->status);
+            })
+            ->when($request->filled('date_from'), function($q) use ($request) {
+                return $q->whereDate('created_at', '>=', $request->date_from);
+            })
+            ->when($request->filled('date_to'), function($q) use ($request) {
+                return $q->whereDate('created_at', '<=', $request->date_to);
+            })
+            ->orderBy('created_at', 'desc');
+
+        $requests = $query->paginate(10);
 
         return view('admin.requests', compact('requests'));
     }
@@ -196,4 +206,58 @@ class AdminController extends Controller
 
         return view('admin.reports', compact('monthlyStats', 'departmentStats'));
     }
+
+    public function users()
+    {
+        $employees = Employee::where('is_admin', 1)->paginate(10);
+        $departments = Employee::distinct()->pluck('department');
+        return view('admin.users.index', compact('employees', 'departments'));
+    }
+    public function storeUser(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:employees',
+            'password' => 'required|string|min:8',
+            'employee_id' => 'required|string|unique:employees',
+            'nic' => 'required|string|unique:employees',
+        ]);
+
+        $employee = Employee::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'employee_id' => $request->employee_id,
+            'nic' => $request->nic,
+            'department' => 'Pending',
+            'position' => 'Pending',
+            'base_salary' => 0,
+            'phone_number' => '',
+            'emergency_contact' => '',
+            'address' => '',
+            'bank_account_no' => '',
+            'bank_name' => '',
+            'is_admin' => true,
+            'is_active' => true,
+        ]);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Admin account created successfully. The admin can now log in and complete their profile.');
+    }
+    public function updateUser(Request $request, Employee $user)
+    {
+        $user->update($request->all());
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'Admin account updated successfully.');
+    }
+
+    public function deleteUser(Employee $user)
+    {
+        $user->delete();
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User deleted successfully.');
+        
+}
 }

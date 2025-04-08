@@ -196,7 +196,7 @@
                         @if(Auth::user()->is_admin)
                         <!-- Users Link -->
                         <li class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.employees.index') }}">
+                            <a href="{{ route('admin.users.index') }}">
                                 <div class="nav-icon">
                                     <i class="fas fa-users"></i>
                                 </div>

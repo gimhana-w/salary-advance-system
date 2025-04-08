@@ -15,12 +15,18 @@ class SalaryAdvanceRequest extends Model
         'rejection_reason',
         'approved_by',
         'approved_at',
+        'rejected_by',
+        'rejected_at',
+        'is_deduct_from_salary',
+        'created_by'
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
         'needed_by_date' => 'date',
         'approved_at' => 'datetime',
+        'rejected_at' => 'datetime',
+        'is_deduct_from_salary' => 'boolean'
     ];
 
     public function employee()
@@ -31,6 +37,16 @@ class SalaryAdvanceRequest extends Model
     public function approver()
     {
         return $this->belongsTo(Employee::class, 'approved_by');
+    }
+
+    public function rejector()
+    {
+        return $this->belongsTo(Employee::class, 'rejected_by');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(Employee::class, 'created_by');
     }
 
     public function isPending()
